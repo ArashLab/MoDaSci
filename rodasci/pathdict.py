@@ -1,3 +1,6 @@
+from typing import ValuesView
+
+
 class PathDict:
 
     @classmethod
@@ -5,9 +8,13 @@ class PathDict:
         cls.defaultFileSystem = defaultFileSystem
         cls.defaultMode = defaultMode
 
-    def __init__(self, pathDict):
-        self.pathDict = pathDict
+    def __init__(self, plainPathDict):
+        self.pathDict = plainPathDict
         pass
+
+    def __iter__(self):
+        for key, value in self.pathDict.items():
+            yield key, value
 
     @property
     def pathDict(self):

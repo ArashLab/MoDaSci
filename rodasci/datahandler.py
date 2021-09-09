@@ -1,12 +1,16 @@
-
 from .permanent import Permanent
 from .volatile import Volatile
 
 class DataHandler:
 
-    def __init__(self, dataHandleDict):
-        self.permanent = Permanent(dataHandleDict.Permanent)
-        self.volatile = Volatile(dataHandleDict.Volatile)
+    def __init__(self, plainDataHandler):
+        self.permanent = Permanent(plainDataHandler.Permanent)
+        self.volatile = Volatile(plainDataHandler.Volatile)
+
+    def __iter__(self):
+        yield 'Permanent', dict(self.permanent)
+        yield 'Volatile', dict(self.volatile)
+
 
     # @property
     # def permanent(self):

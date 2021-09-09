@@ -2,8 +2,12 @@ from .pathdict import PathDict
 
 class PathList:
 
-    def __init__(self, pathList):
-        self.pathList = pathList
+    def __init__(self, plainPathList):
+        self.pathList = plainPathList ### This list is converted to the list of PathDict once the Process function is called but not at this stage
+
+    def __iter__(self):
+        for item in self.pathList:
+            yield dict(item) if self.__processed else item
 
     @property
     def pathList(self):
