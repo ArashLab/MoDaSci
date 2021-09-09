@@ -1,18 +1,3 @@
-### To access version
-import importlib.resources
-from pathlib import Path
-
-packageName='rodasci'
-moduleName='logger'
-with importlib.resources.path(packageName, 'VERSION') as path:
-    print(path)
-    moduleVersion = Path(path).read_text()
-
-if __name__ == '__main__':
-    print(f'This is `{packageName}.{moduleName}` version `{moduleVersion}`')
-    print('This module is not executable.')
-    exit(0)
-    
 import sys
 import logging
 from datetime import datetime

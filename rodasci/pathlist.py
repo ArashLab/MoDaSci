@@ -1,61 +1,9 @@
-### To access version
-import importlib.resources
-from pathlib import Path
+from .pathdict import PathDict
 
-packageName='rodasci'
-moduleName='path'
-with importlib.resources.path(packageName, 'VERSION') as path:
-    print(path)
-    moduleVersion = Path(path).read_text()
-
-if __name__ == '__main__':
-    print(f'This is `{packageName}.{moduleName}` version `{moduleVersion}`')
-    print('This module is not executable.')
-    exit(0)
-
-### dict like class
-class PathDict:
-
-    @classmethod
-    def Init(cls, defaultFileSystem='file://', defaultMode=False):
-        cls.defaultFileSystem = defaultFileSystem
-        cls.defaultMode = defaultMode
-
-    def __init__(self, data):
-        self.pathDict = data
-        pass
-
-    @property
-    def pathDict(self):
-        return self.__pathDict
-
-    @pathDict.setter ### Should be called once only
-    def pathDict(self, data):
-        if isinstance(data, str):
-            inferredDict = self.FullInfer(data)
-        elif isinstance(data, dict):
-            inferredDict = self.Infer(data)
-        else:
-            pass ### Error
-        self.__pathDict.update(inferredDict)
-
-    def FullInfer(self, data):
-        self.pathDict = data
-        pass ### infer from string
-
-    def Infer(self, data):
-        self.pathDict = data
-        pass ### infer from object
-
-    def Exist(self):
-        pass
-
-### list like class
 class PathList:
 
-    def __init__(self, data=None):
-        if data:
-            self.pathList = data
+    def __init__(self, pathList):
+        self.pathList = pathList
 
     @property
     def pathList(self):
