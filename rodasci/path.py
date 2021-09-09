@@ -4,7 +4,7 @@ from pathlib import Path
 
 packageName='rodasci'
 moduleName='path'
-with importlib.resources.path(moduleName, 'VERSION') as path:
+with importlib.resources.path(packageName, 'VERSION') as path:
     print(path)
     moduleVersion = Path(path).read_text()
 
