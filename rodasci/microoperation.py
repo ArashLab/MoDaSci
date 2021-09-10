@@ -6,12 +6,12 @@ from .microp import *
 class MicroOperation:
 
     def __init__(self, plainMicroOperation):
-        self.name = plainMicroOperation.Name
-        self.parameter = plainMicroOperation.Parameter
-        
+        self.name = plainMicroOperation.name
+        self.parameters = plainMicroOperation.parameters
+
     def __iter__(self):
-        yield 'Name', self.name
-        yield 'Parameters', self.parameters
+        yield 'name', self.name
+        yield 'parameters', self.parameters
 
     @property
     def microp(self):

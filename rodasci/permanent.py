@@ -3,9 +3,9 @@ from .pathlist import PathList
 class Permanent:
 
     def __init__(self, plainPermanent):
-        self.pathList = PathList(plainPermanent.PathList)
-        self.ready = plainPermanent.Ready
+        self.pathList = PathList(plainPermanent.path)
+        self.ready = plainPermanent.ready
 
     def __iter__(self):
-        yield 'PathList', list(self.pathList)
-        yield 'Ready', self.ready
+        yield 'path', list(self.pathList)
+        yield 'ready', self.ready

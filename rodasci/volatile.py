@@ -1,9 +1,9 @@
 class Volatile:
 
     def __init__(self, plianVolatile):
-        self.memory = plianVolatile.Memory
-        self.ready = plianVolatile.Ready
+        self.format = plianVolatile.format
+        self.ready = plianVolatile.ready
 
     def __iter__(self):
-        yield 'PathList', self.memory
+        yield 'format', self.format
         yield 'Ready', self.ready

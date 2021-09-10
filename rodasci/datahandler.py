@@ -4,12 +4,12 @@ from .volatile import Volatile
 class DataHandler:
 
     def __init__(self, plainDataHandler):
-        self.permanent = Permanent(plainDataHandler.Permanent)
-        self.volatile = Volatile(plainDataHandler.Volatile)
+        self.permanent = Permanent(plainDataHandler.permanent)
+        self.volatile = Volatile(plainDataHandler.volatile)
 
     def __iter__(self):
-        yield 'Permanent', dict(self.permanent)
-        yield 'Volatile', dict(self.volatile)
+        yield 'permanent', dict(self.permanent)
+        yield 'volatile', dict(self.volatile)
 
 
     # @property
