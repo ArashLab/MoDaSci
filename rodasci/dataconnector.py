@@ -13,17 +13,17 @@ class DataConnector:
         self.dataHandler = dataHandlers[self.dataHandlerName]
 
     @property
-    def volatileData(self):
-        volatileData = self.dataHandler.volatile.data
+    def dataset(self):
+        dataset = self.dataHandler.volatile.dataset
         for microOperation in self.microOperations:
-            volatileData = microOperation.Execute(volatileData)
-        return volatileData
+            dataset = microOperation.Execute(dataset)
+        return dataset
 
-    @volatileData.setter
-    def volatileData(self, volatileData):
+    @dataset.setter
+    def dataset(self, dataset):
         for microOperation in self.microOperations:
-            volatileData = microOperation.Execute(volatileData)
-        self.dataHandler.volatile.data = volatileData
+            dataset = microOperation.Execute(dataset)
+        self.dataHandler.volatile.dataset = dataset
 
 
 

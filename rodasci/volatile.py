@@ -4,19 +4,19 @@ class Volatile:
 
     def __init__(self, plianVolatile):
         self.dataset = Dataset(plianVolatile.dataset)
-        self.ready = plianVolatile.ready
+        self.ready = False
 
     def __iter__(self):
-        yield 'dataset', dict(self.dataset)
+        yield 'dataset', dict(self.__dataset)
         yield 'Ready', self.ready
 
-    @property
-    def data(self):
-        if not self.ready:
-            self.ready
-        pass
+    # @property
+    # def dataset(self):
+    #     if not self.ready:
 
-    @data.setter
-    def data(self, data):
-        ### write data to permanent
-        pass
+    #     pass
+
+    # @dataset.setter
+    # def dataset(self, dataset):
+    #     ### write data to permanent
+    #     pass

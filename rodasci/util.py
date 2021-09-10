@@ -31,3 +31,9 @@ def AddLogDetails(message, caller):
     lineNum = caller.get('lineno', 'None')
     message = f'{functionName}\t{message}\t{fileName}\t{lineNum}'
     return message
+
+def WrapToList(data):
+    if isinstance(data, list):
+        return data
+    else:
+        return [data]
