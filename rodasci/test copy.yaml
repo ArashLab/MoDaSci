@@ -39,7 +39,7 @@ dataHandlers:
   dh5:
     permanent:
       path:
-        - test*.csv
+        - test.csv
         - path: my.tsv
           format: tsv
         - hello.txt

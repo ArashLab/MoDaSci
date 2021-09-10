@@ -11,3 +11,6 @@ class Job:
         yield 'spec', self.spec
         yield 'parameters', self.parameters
         yield 'dataConnectors', {name: dict(dataConnector) for name, dataConnector in self.dataConnectors.items()}
+
+    def Execute(self):
+        pass

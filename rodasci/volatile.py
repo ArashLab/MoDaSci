@@ -10,13 +10,13 @@ class Volatile:
         yield 'dataset', dict(self.__dataset)
         yield 'Ready', self.ready
 
-    # @property
-    # def dataset(self):
-    #     if not self.ready:
+    @property
+    def dataset(self):
+        if not self.ready:
 
-    #     pass
+        pass
 
-    # @dataset.setter
-    # def dataset(self, dataset):
-    #     ### write data to permanent
-    #     pass
+    @dataset.setter
+    def dataset(self, dataset):
+        ### write data to permanent
+        pass
