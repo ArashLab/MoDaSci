@@ -9,3 +9,5 @@ class Permanent:
     def __iter__(self):
         yield 'path', list(self.pathList)
         yield 'ready', self.ready
+
+    

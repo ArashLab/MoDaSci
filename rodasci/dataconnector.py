@@ -9,6 +9,23 @@ class DataConnector:
         yield 'dataHandlerName', self.dataHandlerName
         yield 'microOperations', [dict(microOperation) for microOperation in self.microOperations]
 
+    def SetDataHanlder(self, dataHandlers):
+        self.dataHandler = dataHandlers[self.dataHandlerName]
+
+    @property
+    def volatileData(self):
+        volatileData = self.dataHandler.volatile.data
+        for microOperation in self.microOperations:
+            volatileData = microOperation.Execute(volatileData)
+        return volatileData
+
+    @volatileData.setter
+    def volatileData(self, volatileData):
+        for microOperation in self.microOperations:
+            volatileData = microOperation.Execute(volatileData)
+        self.dataHandler.volatile.data = volatileData
+
+
 
 
 

@@ -4,7 +4,8 @@ dataHandlers:
       path: abcd.tsv
       ready: false
     volatile:
-      format: pandas
+      dataset:
+        format: pandas
       ready: false
   dh2:
     permanent:
@@ -14,14 +15,16 @@ dataHandlers:
         type: file
       ready: false
     volatile:
-      format: pandas
+      dataset:
+        format: pandas
       ready: false
   dh3:
     permanent:
       path: def.xxx
       ready: false
     volatile:
-      format: hailTable
+      dataset:
+        format: hailTable
       ready: false
   dh4:
     permanent:
@@ -30,7 +33,8 @@ dataHandlers:
         - b*.tsv
       ready: false
     volatile:
-      format: pandas
+      dataset:
+        format: pandas
       ready: false
   dh5:
     permanent:
@@ -41,7 +45,8 @@ dataHandlers:
         - hello.txt
       ready: false
     volatile:
-      format: pandas
+      dataset:
+        format: pandas
       ready: false
 jobs:
   j1:
