@@ -2,7 +2,7 @@ import setuptools
 from pathlib import Path
 import subprocess
 
-repo='rodasci'
+repo='modasci'
 
 def GetVersion():
     version = Path(f'{repo}/VERSION').read_text().split('-')[0]

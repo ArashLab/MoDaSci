@@ -1,4 +1,4 @@
-REPO='rodasci'
+REPO='modasci'
 
 set -x
 rm -rf build dist ${REPO}.egg-info/ ${REPO}.egg-info

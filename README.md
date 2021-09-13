@@ -1,2 +1,2 @@
 # RoDaSci
-Robust Data Science
+Modular Data Science
