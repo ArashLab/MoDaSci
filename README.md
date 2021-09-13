@@ -1,2 +1,2 @@
-# RoDaSci
+# MoDaSci
 Modular Data Science
