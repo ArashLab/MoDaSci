@@ -1,3 +1,5 @@
+from munch import Munch
+
 from . import persistents, volatiles
 from .serialization import YAMLMixin
 
@@ -6,7 +8,14 @@ class DataHandler(YAMLMixin):
 
     @staticmethod
     def inferStorage(plainDataHandler):
-        return persistents.Reference, volatiles.PandasDataFrame
+        # ToDo: The inference logic is incomplete and only intended for tests.
+        if isinstance(plainDataHandler.persistent, str):  # It's only a path.
+            plainDataHandler.persistent = Munch({'path': plainDataHandler.persistent})
+        persistent_format = plainDataHandler.persistent.get('format') or 'Reference'
+        persistent_class = getattr(persistents, persistent_format)
+        volatile_format = plainDataHandler.get('volatile', Munch({})).get('format') or 'HailTable'
+        volatile_class = getattr(volatiles, volatile_format)
+        return persistent_class, volatile_class
 
     def __init__(self, plainDataHandler):
         Persistent, Volatile = self.inferStorage(plainDataHandler)

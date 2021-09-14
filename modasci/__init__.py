@@ -1,1 +1,2 @@
-from .tasks import Task, MicroTask
+from .micro_task import MicroTask
+from .task import Task

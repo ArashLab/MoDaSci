@@ -4,8 +4,8 @@ from pydoc import locate
 from munch import Munch
 from stringcase import snakecase, pascalcase
 
-from .base import TaskBase
-from ..data_connector import DataConnector
+from .data_connector import DataConnector
+from .task_base import TaskBase
 
 
 class Task(TaskBase, abc.ABC):
@@ -24,10 +24,11 @@ class Task(TaskBase, abc.ABC):
 
     @staticmethod
     def instantiate(plainTask, dataHandlers):
+        stores = ('tasks', 'rodasci.contrib.tasks')
         spec = plainTask.spec if isinstance(plainTask, Munch) else plainTask
-        path = f'tasks.{snakecase(spec)}.{pascalcase(spec)}'
-        cls = locate(path)
-        assert cls is not None, f'Could not import {path}'
+        candidates = [locate(f'{store}.{snakecase(spec)}.{pascalcase(spec)}') for store in stores]
+        cls = next(cls for cls in candidates if cls is not None)
+        assert cls is not None, f'Could not import {spec}'
         dataConnectors = {}
         for identifier, plainDataConnector in plainTask.get('dataConnectors', {}).items():
             dataHandler = plainDataConnector.dataHandler if isinstance(plainDataConnector, Munch) else plainDataConnector

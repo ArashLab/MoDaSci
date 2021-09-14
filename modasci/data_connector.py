@@ -1,5 +1,5 @@
+from .micro_task import MicroTask
 from .serialization import YAMLMixin
-from .tasks import MicroTask
 
 
 class DataConnector(YAMLMixin):

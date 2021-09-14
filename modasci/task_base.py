@@ -1,6 +1,6 @@
 import abc
 
-from ..serialization import YAMLMixin
+from .serialization import YAMLMixin
 
 
 class TaskBase(YAMLMixin, abc.ABC):

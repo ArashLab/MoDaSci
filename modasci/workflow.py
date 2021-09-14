@@ -4,7 +4,7 @@ from munch import Munch
 
 from .data_handler import DataHandler
 from .serialization import YAMLMixin
-from .tasks import Task
+from .task import Task
 
 
 class Workflow(YAMLMixin):
