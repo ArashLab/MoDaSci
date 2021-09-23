@@ -1,10 +1,7 @@
 import abc
-from pydoc import locate
-
-from munch import Munch
-from stringcase import snakecase, pascalcase
 
 from .task_base import TaskBase
+from .utils import import_class as _import_class
 
 
 class MicroTask(TaskBase, abc.ABC):
@@ -13,19 +10,19 @@ class MicroTask(TaskBase, abc.ABC):
     Subclass this class and override the `execute()` method to define a custom task and reference it in the workflow.
     """
 
-    def __init__(self, parameters):
-        self.parameters = parameters
+    def __init__(self, plainMicroTask):
+        self.parameters = plainMicroTask.parameters
 
     @abc.abstractmethod
     def execute(self, volatileData):
         pass
 
-    @staticmethod
-    def instantiate(plainMicroTask):
-        stores = ('micro_tasks', 'rodasci.contrib.micro_tasks')
-        spec = plainMicroTask.spec if isinstance(plainMicroTask, Munch) else plainMicroTask
-        candidates = [locate(f'{store}.{snakecase(spec)}.{pascalcase(spec)}') for store in stores]
-        cls = next(cls for cls in candidates if cls is not None)
-        assert cls is not None, f'Could not import {spec}'
-        # noinspection PyCallingNonCallable
-        return cls(parameters=plainMicroTask.get('parameters') if isinstance(plainMicroTask, Munch) else {})
+    def toDict(self):
+        return {
+            'spec': self.__class__.__name__,
+            'parameters': self.parameters,
+        }
+
+
+def import_task(identifier):
+    return _import_class('micro_tasks', identifier)

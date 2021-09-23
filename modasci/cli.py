@@ -13,7 +13,7 @@ def run():
     The function is bound to the package's main entry point, as well as its console entry point.
     """
     # ToDo: Bound the function as the package's console entry point.
-    parser = argparse.ArgumentParser(prog='rodasci', description='Executes the described workflow.')
+    parser = argparse.ArgumentParser(prog='modasci', description='Executes the described workflow.')
     parser.add_argument('config', type=pathlib.Path, nargs='?', default='workflow.yaml', help='YAML blueprint.')
     arguments = parser.parse_args()
     with open(arguments.config, 'r') as stream:

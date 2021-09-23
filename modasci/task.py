@@ -1,11 +1,10 @@
 import abc
-from pydoc import locate
 
 from munch import Munch
-from stringcase import snakecase, pascalcase
 
 from .data_connector import DataConnector
 from .task_base import TaskBase
+from .utils import import_class as _import_class
 
 
 class Task(TaskBase, abc.ABC):
@@ -14,26 +13,22 @@ class Task(TaskBase, abc.ABC):
     Subclass this class and override the `execute()` method to define a custom task and reference it in the workflow.
     """
 
-    def __init__(self, parameters, dataConnectors):
-        self.parameters = parameters
-        self.dataConnectors = dataConnectors
+    def __init__(self, plainTask, dataHandlers):
+        self.parameters = plainTask.get('parameters', Munch({}))
+        self.dataConnectors = Munch({label: DataConnector(plainDataConnector, dataHandlers[plainDataConnector.dataHandler])
+                                     for label, plainDataConnector in plainTask.dataConnectors.items()})
 
     @abc.abstractmethod
     def execute(self):
         pass
 
-    @staticmethod
-    def instantiate(plainTask, dataHandlers):
-        stores = ('tasks', 'rodasci.contrib.tasks')
-        spec = plainTask.spec if isinstance(plainTask, Munch) else plainTask
-        candidates = [locate(f'{store}.{snakecase(spec)}.{pascalcase(spec)}') for store in stores]
-        cls = next(cls for cls in candidates if cls is not None)
-        assert cls is not None, f'Could not import {spec}'
-        dataConnectors = {}
-        for identifier, plainDataConnector in plainTask.get('dataConnectors', {}).items():
-            dataHandler = plainDataConnector.dataHandler if isinstance(plainDataConnector, Munch) else plainDataConnector
-            microTasks = plainDataConnector.get('microTasks', {}) if isinstance(plainDataConnector, Munch) else {}
-            plainDataConnector = {'dataHandler': dataHandler, 'microTasks': microTasks}
-            dataConnectors[identifier] = DataConnector(plainDataConnector, dataHandlers[dataHandler])
-        # noinspection PyCallingNonCallable
-        return cls(parameters=plainTask.get('parameters'), dataConnectors=Munch(dataConnectors))
+    def toDict(self):
+        return {
+            'spec': self.__class__.__name__,
+            'parameters': self.parameters,
+            'dataConnectors': self.dataConnectors,
+        }
+
+
+def import_class(identifier):
+    return _import_class('tasks', identifier)

@@ -1,10 +1,13 @@
+import os
 from typing import Dict, List
 
+from dacite import from_dict
 from munch import Munch
 
 from .data_handler import DataHandler
 from .serialization import YAMLMixin
-from .task import Task
+from .settings import Settings
+from .task import import_class
 
 
 class Workflow(YAMLMixin):
@@ -27,8 +30,16 @@ class Workflow(YAMLMixin):
     """
 
     def __init__(self, plainWorkflow):
-        self.dataHandlers = {identifier: DataHandler(plainDataHandler) for identifier, plainDataHandler in plainWorkflow.dataHandlers.items()}
-        self.tasks = [Task.instantiate(plainTask, self.dataHandlers) for plainTask in plainWorkflow.tasks]
+        self.settings = from_dict(Settings, plainWorkflow.get('config', {}).get('settings', {}))
+        self.injectEnvVars(plainWorkflow.get('config', {}).get('environ', {}))
+        self.dataHandlers = {identifier: DataHandler(plainDataHandler, self.settings)
+                             for identifier, plainDataHandler in plainWorkflow.dataHandlers.items()}
+        self.tasks = [import_class(plainTask.spec)(plainTask, self.dataHandlers) for plainTask in plainWorkflow.tasks]
+
+    def injectEnvVars(self, di):
+        for key, value in di.items():
+            if key not in os.environ or self.settings.overrideEnvVar:
+                os.environ[key] = value
 
     def start(self):
         """

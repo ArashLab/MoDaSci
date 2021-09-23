@@ -7,4 +7,7 @@ class Storage(abc.ABC):
     The `Storage` is subclassed by both `Persistent` and `Volatile`, allowing for the definition of an interface for
     their common methods and attributes.
     """
-    pass
+
+    @property
+    def name(self):
+        return self.__class__.__name__

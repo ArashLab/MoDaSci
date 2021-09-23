@@ -1,0 +1,5 @@
+dacite==1.6.0
+Munch==2.5.0
+PyYAML==5.4.1
+requests==2.26.0
+stringcase==1.2.0

@@ -1,0 +1,13 @@
+dataHandlers:
+  inVCF:
+    persistent:
+      path: 'data/1kg.s2504.v81207.vcf.bgz'
+  outMt:
+    persistent:
+      path: 'results/1kg.s2504.v81207.mt'
+
+Tasks:
+  - spec: Bypass
+    dataConnectors:
+      source: inVCF
+      destination: outMt
