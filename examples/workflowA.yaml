@@ -1,13 +1,41 @@
 dataHandlers:
   inVCF:
     persistent:
-      path: 'data/1kg.s2504.v81207.vcf.bgz'
+      path: 'examples/data/1kg.s2504.v81207.vcf.bgz'
+      format: RawPath
+    volatile:
+      format: 'hail.MatrixTable'
   outMt:
     persistent:
-      path: 'results/1kg.s2504.v81207.mt'
+      path: 'examples/results/1kg.s2504.v81207.mt'
+      format: RawPath
+    volatile:
+      format: 'hail.MatrixTable'
+  varCSV:
+    persistent:
+      path: 'examples/results/1kg.v81207.csv.gz'
+      format: RawPath
+    volatile:
+      format: 'pandas.DataFrame'
 
-Tasks:
+tasks:
   - spec: Bypass
     dataConnectors:
-      source: inVCF
-      destination: outMt
+      source:
+        dataHandler: inVCF
+      destination:
+        dataHandler: outMt
+
+  - spec: Bypass
+    dataConnectors:
+      source:
+        dataHandler: outMt
+        microTasks:
+          - spec: Convert
+            parameters:
+              from: HailMatrixTable
+              to: PandasDataFrame
+              axis: rows
+      destination:
+        dataHandler: varCSV
+        
