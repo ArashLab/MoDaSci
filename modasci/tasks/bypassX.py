@@ -1,7 +1,7 @@
 from ..task import Task
 
 
-class Bypass(Task):
+class BypassX(Task):
 
     def execute(self):
         conversions = {

@@ -2,6 +2,7 @@ from munch import Munch
 
 from .utils import import_class
 from .serialization import YAMLMixin
+from .micro_task import import_class
 
 
 class DataConnector(YAMLMixin):
@@ -16,7 +17,7 @@ class DataConnector(YAMLMixin):
     def __init__(self, plainDataConnector, dataHandler):
         self.dataHandler = dataHandler
         self.augmentedVolatileData = None
-        self.microTasks = [load_micro_task(plainMicroTask.spec)(plainMicroTask)
+        self.microTasks = [import_class(plainMicroTask.spec)(plainMicroTask)
                            for plainMicroTask in plainDataConnector.get('microTasks', Munch({}))]
 
     @property

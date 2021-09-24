@@ -24,5 +24,5 @@ class MicroTask(TaskBase, abc.ABC):
         }
 
 
-def import_task(identifier):
+def import_class(identifier):
     return _import_class('micro_tasks', identifier)

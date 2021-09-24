@@ -5,11 +5,12 @@ from ...volatile import Volatile
 
 class MatrixTable(Volatile):
     functions = {
-        '.vcf': ('import_vcf', 'export_vcf'),
-        '.bgen': ('import_bgen', 'export_bgen'),
-        '.gen': ('import_gen', 'export_gen'),
-        '.gvcf': ('import_gvcfs', ''),  # Corresponding export method hasn't been introduced.
-        'plink': ('import_plink', 'export_plink'),
+        '.vcf': ('import_vcf', 'export_vcf', False),
+        '.bgen': ('import_bgen', 'export_bgen', False),
+        '.gen': ('import_gen', 'export_gen', False),
+        '.gvcf': ('import_gvcfs', '', False),  # Corresponding export method hasn't been introduced.
+        'plink': ('import_plink', 'export_plink', False),
+        '.mt': ('read_matrix_table', 'write', True),
     }
 
     def populate(self, persistent):
@@ -22,7 +23,7 @@ class MatrixTable(Volatile):
                 extension, compression = 'plink', None
         # By this point, if the file is unknown, `extension` would be undefined, which will cause an extension. However,
         # we might want to catch it and raise a more appropriate error.
-        read_func, write_func = self.functions[extension]
+        read_func, write_func, from_instance = self.functions[extension]
         with persistent.read() as handle:
             read_func = getattr(hl, read_func)
             dataFrame = read_func(handle, **self.importParameters)
@@ -38,8 +39,12 @@ class MatrixTable(Volatile):
                 extension, compression = 'plink', None
         # By this point, if the file is unknown, `extension` would be undefined, which will cause an extension. However,
         # we might want to catch it and raise a more appropriate error.
-        read_func, write_func = self.functions[extension]
+        read_func, write_func, from_instance = self.functions[extension]
         with persistent.write() as handle:
-            write_func = getattr(hl, write_func)
-            write_func(updatedMatrixTable, handle, **self.exportParameters)
+            if from_instance:
+                write_func = getattr(updatedMatrixTable, write_func)
+                write_func(handle, **self.exportParameters)
+            else:
+                write_func = getattr(hl, write_func)
+                write_func(updatedMatrixTable, handle, **self.exportParameters)
         self.values, self.ready = updatedMatrixTable, True
