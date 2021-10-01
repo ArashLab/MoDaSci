@@ -15,19 +15,27 @@ class DataFrame(Volatile):
         '.pickle': ('read_pickle', 'to_pickle'),
         '.parquet': ('read_parquet', 'to_parquet'),
     }
+    compressionModes = {
+        '.gz': 'gzip',
+        '.bz2': 'bz2',
+        '.zip': 'zip',
+        '.xz': 'xz'
+    }
 
     def populate(self, persistent):
-        extension, compression = persistent.path.extension()
+        extension, compression = persistent.extension()
         read_func, write_func = self.functions[extension]
         with persistent.read() as handle:
             read_func = getattr(pd, read_func)
-            dataFrame = read_func(handle, **self.importParameters)
+            extraKwargs = {'compression': self.compressionModes[compression] if compression else 'infer'}
+            dataFrame = read_func(handle, **self.importParameters, **extraKwargs)
         self.values, self.ready = dataFrame, True
 
     def mutate(self, persistent, updatedDataFrame):
-        extension, compression = persistent.path.extension()
+        extension, compression = persistent.extension()
         read_func, write_func = self.functions[extension]
         with persistent.write() as handle:
             write_func = getattr(updatedDataFrame, write_func)
-            write_func(handle, **self.exportParameters)
+            extraKwargs = {'compression': self.compressionModes[compression] if compression else 'infer'}
+            write_func(handle, **self.exportParameters, **extraKwargs)
         self.values, self.ready = updatedDataFrame, True

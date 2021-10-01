@@ -22,10 +22,10 @@ class Convert(MicroTask):
                 return volatileData.to_spark()
 
         elif srcFormat == 'HailMatrixTable':
-            axis = self.parameters.get('axis')
-            if axis == 'rows':
+            axis = self.parameters.axis
+            if axis == 'row':
                 ht = volatileData.rows()
-            elif axis == 'cols':
+            elif axis == 'col':
                 ht = volatileData.cols()
 
             if destFormat == 'HailTable':

@@ -14,10 +14,10 @@ class DataHandler(YAMLMixin):
 
     @staticmethod
     def identifyStorages(plainDataHandler):
-        persistent_format = plainDataHandler.persistent.format
-        persistent_class = persistent.import_class(persistent_format)
-        volatile_format = plainDataHandler.volatile.format
-        volatile_class = volatile.import_class(volatile_format)
+        persistent_type = plainDataHandler.persistent.type
+        volatile_type = plainDataHandler.volatile.type
+        persistent_class = persistent.import_class(persistent_type)
+        volatile_class = volatile.import_class(volatile_type)
         return persistent_class, volatile_class
 
     def __init__(self, plainDataHandler, settings):

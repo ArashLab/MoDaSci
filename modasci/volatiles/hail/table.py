@@ -17,20 +17,22 @@ class Table(Volatile):
     }
 
     def populate(self, persistent):
-        extension, compression = persistent.path.extension()
+        extension, compression = persistent.extension()
         read_func, write_func, from_instance = self.functions[extension]
         with persistent.read() as handle:
             read_func = getattr(hl, read_func)
-            dataFrame = read_func(handle, **self.importParameters)
+            extraKwargs = {'delimiter': ',' if extension == '.csv' else '\t'} if extension in ('.csv', '.tsv') else {}
+            dataFrame = read_func(handle, **self.importParameters, **extraKwargs)
         self.values, self.ready = dataFrame, True
 
     def mutate(self, persistent, updatedTable):
-        extension, compression = persistent.path.extension()
+        extension, compression = persistent.extension()
         read_func, write_func, from_instance = self.functions[extension]
         with persistent.write() as handle:
             if from_instance:
                 write_func = getattr(updatedTable, write_func)
-                write_func(handle, **self.exportParameters)
+                extraKwargs = {'delimiter': ',' if extension == '.csv' else '\t'} if extension in ('.csv', '.tsv') else {}
+                write_func(handle, **self.exportParameters, **extraKwargs)
             else:
                 write_func = getattr(hl, write_func)
                 write_func(updatedTable, handle, **self.exportParameters)

@@ -14,7 +14,7 @@ class MatrixTable(Volatile):
     }
 
     def populate(self, persistent):
-        extensions = persistent.path.extension()
+        extensions = persistent.extension()
         if isinstance(extensions, tuple):
             extension, compression = extensions
         elif isinstance(extensions, list):  # In case more than one path was listed.
@@ -30,7 +30,7 @@ class MatrixTable(Volatile):
         self.values, self.ready = dataFrame, True
 
     def mutate(self, persistent, updatedMatrixTable):
-        extensions = persistent.path.extension()
+        extensions = persistent.extension()
         if isinstance(extensions, tuple):
             extension, compression = extensions
         elif isinstance(extensions, list):  # In case more than one path was listed.

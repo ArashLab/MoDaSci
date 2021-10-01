@@ -27,6 +27,13 @@ class Persistent(Storage, YAMLMixin, abc.ABC):
 
     def __init__(self, plainStorage, settings):
         self.path = Path(plainStorage.path, settings)
+        self.format = plainStorage.get('format')
+
+    def extension(self):
+        if self.format is not None:
+            extension, *compression = self.format.split('.')
+            return f'.{extension}', (f'.{compression[0]}' if compression else None)
+        return self.path.extension()
 
     @abc.abstractmethod
     def read(self):
