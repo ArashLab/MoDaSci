@@ -10,5 +10,5 @@ class Alias(MicroTask):
             colName= self.parameters.colName
             mapper = hl.dict(self.parameters.mapper)
             expr = {colName: hl.rbind(volatileData[colName], lambda value: mapper[value])}
-            return volatileData.annotate(**expr)
-        
+            data = volatileData.annotate(**expr)
+        return data

@@ -7,5 +7,6 @@ class Rename(MicroTask):
 
     def execute(self, volatileData):
         if isinstance(volatileData, hl.MatrixTable) or isinstance(volatileData, hl.Table):
-            return volatileData.rename(self.parameters.rename)
+            data = volatileData.rename(self.parameters.rename)
+        return data
         

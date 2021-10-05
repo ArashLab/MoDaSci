@@ -9,5 +9,6 @@ import numpy as np
 class Evaluate(MicroTask):
 
     def execute(self, volatileData):
-        return eval(self.parameters.exprssion, locals={'data': volatileData})
+        data = eval(self.parameters.exprssion, locals={'data': volatileData})
+        return data
         
